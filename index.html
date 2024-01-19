@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        
+        #container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        img {
+            display: block;
+            margin: 0 auto;
+            max-width: 200px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-bottom: 5px;
+        }
+        
+        label {
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        function submit() {
+            var username = document.getElementById('username').value;
+            var link = "https://api.github.com/users/" + username;
+            var JSONtext = '';
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                JSONtext = this.responseText;
+                const JSONobject = JSON.parse(JSONtext);
+                document.getElementById("userPhoto").src = JSONobject.avatar_url;
+                document.getElementById("userName").innerHTML = JSONobject.name;
+                document.getElementById("userCreated_at").innerHTML = JSONobject.created_at;
+                document.getElementById("userUpdated_at").innerHTML = JSONobject.updated_at;
+            }
+            xhttp.open("GET", link);
+            xhttp.send();
+        }
+    </script>
+</head>
+<body>
+    <h1>Github User Info</h1>
+    <div id="container">
+        <input type="text" id="username" placeholder="Enter GitHub username" />
+        <button type="button" id="submit" onclick="submit()">Submit</button>
+        <img id="userPhoto" alt="Avatar">
+        <p><label>Name:</label> <span id="userName"></span></p>
+        <p><label>Created at:</label> <span id="userCreated_at"></span></p>
+        <p><label>Updated at:</label> <span id="userUpdated_at"></span></p>
+    </div>
+</body>
+</html>
